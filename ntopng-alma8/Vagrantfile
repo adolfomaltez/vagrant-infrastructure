@@ -1,0 +1,30 @@
+## Configuration parameters
+BOX_BASE = "almalinux/8"
+
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "ntopng01" do |ntopng01|
+    ntopng01.vm.provider "virtualbox" do |vb_ntopng01|
+      vb_ntopng01.memory = 4096
+      vb_ntopng01.cpus = 2
+    end
+
+    ntopng01.vm.box = BOX_BASE
+    ntopng01.vm.hostname = "ntopng01"
+    ntopng01.vm.network "private_network", ip: "192.168.33.10"
+  end
+
+  config.vm.define "nprobe01" do |nprobe01|
+    nprobe01.vm.box = BOX_BASE
+    nprobe01.vm.hostname = "nprobe01"
+    nprobe01.vm.network "private_network", ip: "192.168.33.11"
+  end
+
+  config.vm.define "nprobe02" do |nprobe02|
+    nprobe02.vm.box = BOX_BASE
+    nprobe02.vm.hostname = "nprobe02"
+    nprobe02.vm.network "private_network", ip: "192.168.33.12"
+  end
+
+end

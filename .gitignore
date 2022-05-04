@@ -1,0 +1,5 @@
+# ignore .vagrant
+.vagrant/
+
+# ignore certificates
+*.crt

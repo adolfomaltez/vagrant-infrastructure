@@ -1,6 +1,9 @@
 # vagrant-infrastructure
 Vagrant projects for easy and fast implementation of applications in test environments
 
+## awx-ubuntu20
+awx scenario for Ubuntu 20
+
 ## ntopng-alma8
 ntopng/nprobe scenario for AlmaLinux 8
 
@@ -8,4 +11,5 @@ ntopng/nprobe scenario for AlmaLinux 8
 ntopng/nprobe scenario for AlmaLinux 7
 
 ## TODO
-- AWX (Ansible Project)
+- Automatic scripts provision from vagrant
+- Ansible for CISCO IOS/NXOS/ASA

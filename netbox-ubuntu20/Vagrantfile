@@ -1,0 +1,17 @@
+## Configuration parameters
+BOX_BASE = "bento/ubuntu-20.04"
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "netbox01" do |netbox01|
+    netbox01.vm.provider "virtualbox" do |vb_netbox01|
+      vb_netbox01.memory = 4096
+      vb_netbox01.cpus = 2
+    end
+
+    netbox01.vm.box = BOX_BASE
+    netbox01.vm.hostname = "netbox01"
+    netbox01.vm.network "private_network", ip: "192.168.33.40"
+    netbox01.vm.provision "shell", path: "provision-netbox.sh"
+  end
+end

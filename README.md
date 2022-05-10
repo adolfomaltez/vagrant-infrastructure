@@ -7,6 +7,9 @@ awx scenario for Ubuntu 20
 ## netbox-ubuntu20
 netbox for Ubuntu 20
 
+## dynamips-debian10
+dynamips debian 10 project
+
 ## ntopng-alma8
 ntopng/nprobe scenario for AlmaLinux 8
 
@@ -14,4 +17,4 @@ ntopng/nprobe scenario for AlmaLinux 8
 ntopng/nprobe scenario for AlmaLinux 7
 
 ## TODO
-- Ansible for CISCO IOS/NXOS/ASA
+- Ansible for CISCO IOS/IOSXR/NXOS/ASA

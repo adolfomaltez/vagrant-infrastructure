@@ -1,0 +1,24 @@
+# https://www.networkstraining.com/using-the-management-interface-of-the-cisco-asa-firewall
+Virtualbox, ubuntu x64
+
+
+# Configure IP
+
+ena
+configure terminal
+interface Management 0/0
+nameif MGT
+security-level 100
+ip address 192.168.33.31 255.255.255.0
+management-only
+shutdown
+no shutdown
+exit
+
+# Configure SSH
+
+crypto key generate rsa modulus 4096
+write memory
+username asa_admin password strongpass privilege 15
+aaa authentication ssh console LOCAL
+ssh 192.168.99.0 255.255.255.0 MGT

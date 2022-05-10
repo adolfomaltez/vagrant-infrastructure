@@ -1,0 +1,18 @@
+# Configure SSH on cisco nexus 7000
+# https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus7000/sw/security/config/cisco_nexus7000_security_config_guide_8x/configuring_ssh_and_telnet.html
+
+
+conf terminal
+no feature ssh
+ssh key rsa 2048 force
+feature ssh
+
+interface Vlan3000
+ip address 192.168.33.21 255.255.255.0
+no shutdown
+exit
+
+interface mgmt 0
+ip address 192.168.33.21 255.255.255.0
+no shutdown
+exit

@@ -1,0 +1,19 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+## Configuration parameters
+BOX_BASE = "debian/buster64"
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "dynamips01" do |dynamips01|
+    dynamips01.vm.provider "virtualbox" do |vb_dynamips01|
+      vb_dynamips01.memory = 2048
+      vb_dynamips01.cpus = 1
+    end
+
+    dynamips01.vm.box = BOX_BASE
+    dynamips01.vm.hostname = "dynamips01"
+    dynamips01.vm.network "private_network", ip: "192.168.33.10"
+    dynamips01.vm.provision "shell", path: "provision-dynamips.sh"
+  end
+end

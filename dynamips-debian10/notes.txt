@@ -1,0 +1,56 @@
+# Minimal CISCO IOS Lab. (virtualbox) on laptop
+
+
+# Run cisco router on Dynamips hypervisor
+mkdir /root/r1;
+cd /root/r1; 
+dynamips -i 0 -j -T 2001 -p 1:0:PA-FE-TX -s 1:0:tap:tap0 /vagrant/IOS/c7200-advipservicesk9.124-2.T.bin &
+
+mkdir /root/r2;
+cd /root/r2; 
+dynamips -i 1 -j -T 2002 -p 1:0:PA-FE-TX -s 1:0:tap:tap1 /vagrant/IOS/c7200-advipservicesk9.124-2.T.bin &
+
+# Configure routers
+#telnet localhost 2001
+#telnet localhost 2002
+
+ena
+configure terminal
+username cisco priv 15 secret cisco123
+hostname r1
+#hostname r2
+ip domain-name cisco.com
+crypto key generate rsa
+1024
+
+interface fastEthernet 1/0
+no shutdown
+ip address 192.168.33.11 255.255.255.0
+#ip address 192.168.33.12 255.255.255.0
+exit
+ip ssh version 2
+line vty 0 15
+transport input ssh
+login local
+exit
+enable secret cisco123
+exit
+ping 192.168.33.10
+
+
+
+Add static routes in windows (as Administrator)
+route DELETE 192.168.33.11 MASK 255.255.255.255 192.168.33.10
+route DELETE 192.168.33.12 MASK 255.255.255.255 192.168.33.10
+route ADD 192.168.33.11 MASK 255.255.255.255 192.168.33.10
+route ADD 192.168.33.12 MASK 255.255.255.255 192.168.33.10
+
+
+
+# Connect to SSH
+ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 -c aes256-cbc -lcisco 192.168.33.11
+ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 -c aes256-cbc -lcisco 192.168.33.12
+
+# Ansible
+ansible-playbook show_version.yml -i inventory.cfg -l r1
+## https://www.packetswitch.co.uk/ansible-with-cisco/

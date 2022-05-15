@@ -2,13 +2,16 @@
 Vagrant projects for easy and fast implementation of applications in test environments
 
 ## awx-ubuntu20
-awx scenario for Ubuntu 20
+AWX project for Ubuntu 20
+
+## dynamips-debian10
+Dynamips debian 10 project
+
+## kubernetes-ubuntu16
+Kubernetes project on  Ubuntu 16, with Ansible autoprovision
 
 ## netbox-ubuntu20
 netbox for Ubuntu 20
-
-## dynamips-debian10
-dynamips debian 10 project
 
 ## ntopng-alma8
 ntopng/nprobe scenario for AlmaLinux 8

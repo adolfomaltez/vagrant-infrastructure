@@ -35,3 +35,5 @@ foreman-installer -v \
 - https://idroot.us/install-foreman-almalinux-8/
 - https://wiki.crowncloud.net/?How_to_Change_Hostname_in_AlmaLinux_8
 - https://docs.theforeman.org/2.5/Provisioning_Guide/index-foreman-el.html
+- https://projects.theforeman.org/projects/foreman/wiki/VMware_ESXi
+- http://www.c0t0d0s0.de/esxwithforeman/esxwithforeman.html

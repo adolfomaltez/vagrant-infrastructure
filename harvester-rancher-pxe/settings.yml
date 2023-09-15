@@ -12,22 +12,33 @@
 # Harvester media to install. The URL scheme can be either 'http', 'https', or
 # 'file'. If the URL scheme is 'file', the given media will be copied from the
 # local file system instead of downloading from a remote location.
+
+# HTTPS
 #harvester_iso_url: https://releases.rancher.com/harvester/master/harvester-master-amd64.iso
 #harvester_kernel_url: https://releases.rancher.com/harvester/master/harvester-master-vmlinuz-amd64
 #harvester_ramdisk_url: https://releases.rancher.com/harvester/master/harvester-master-initrd-amd64
 #harvester_rootfs_url: https://releases.rancher.com/harvester/master/harvester-master-rootfs-amd64.squashfs
 
-harvester_iso_url: http://192.168.11.12/harvester/harvester-master-amd64.iso
-harvester_kernel_url: http://192.168.11.12/harvester/harvester-master-vmlinuz-amd64
-harvester_ramdisk_url: http://192.168.11.12/harvester/harvester-master-initrd-amd64
-harvester_rootfs_url: http://192.168.11.12/harvester/harvester-master-rootfs-amd64.squashfs
+# PRIVATE SERVER
+#harvester_iso_url: http://192.168.11.12/harvester/harvester-master-amd64.iso
+#harvester_kernel_url: http://192.168.11.12/harvester/harvester-master-vmlinuz-amd64
+#harvester_ramdisk_url: http://192.168.11.12/harvester/harvester-master-initrd-amd64
+#harvester_rootfs_url: http://192.168.11.12/harvester/harvester-master-rootfs-amd64.squashfs
+
+
+# LOCAL FILESYSTEM
+harvester_iso_url: file:///home/taro/Downloads/harvester/harvester-master-amd64.iso
+harvester_kernel_url: file:///home/taro/Downloads/harvester/harvester-master-vmlinuz-amd64
+harvester_ramdisk_url: file:///home/taro/Downloads/harvester/harvester-master-initrd-amd64
+harvester_rootfs_url: file:///home/taro/Downloads/harvester/harvester-master-rootfs-amd64.squashfs
+
 
 #
 # harvester_cluster_nodes
 #
 # NOTE: keep in mind that you need at least 3 nodes to make a cluster
 #
-harvester_cluster_nodes: 3
+harvester_cluster_nodes: 1
 
 #
 # network_config
@@ -63,25 +74,25 @@ harvester_network_config:
   cluster:
     - ip: 192.168.0.30
       mac: 02:00:00:0D:62:E2
-      cpu: 10
-      memory: 20480
+      cpu: 8
+      memory: 8192
       disk_size: 500G
       vagrant_interface: ens5
       mgmt_interface: ens6
     - ip: 192.168.0.31
       mac: 02:00:00:35:86:92
-      cpu: 10
-      memory: 20480
+      cpu: 8
+      memory: 8192
       disk_size: 500G
       vagrant_interface: ens5
       mgmt_interface: ens6
-    - ip: 192.168.0.32
-      mac: 02:00:00:2F:F2:2A
-      cpu: 10
-      memory: 20480
-      disk_size: 500G
-      vagrant_interface: ens5
-      mgmt_interface: ens6
+#    - ip: 192.168.0.32
+#      mac: 02:00:00:2F:F2:2A
+#      cpu: 10
+#      memory: 20480
+#      disk_size: 500G
+#      vagrant_interface: ens5
+#      mgmt_interface: ens6
 #    - ip: 192.168.0.33
 #      mac: 02:00:00:A7:E6:FF
 #      cpu: 10
@@ -119,10 +130,10 @@ harvester_config:
 #
 harvester_node_config:
   # number of CPUs assigned to each node
-  cpu: 10
+  cpu: 8
 
   # memory size for each node, in MBytes
-  memory: 20480
+  memory: 8192
 
   # disk size for each node
   disk_size: 500G

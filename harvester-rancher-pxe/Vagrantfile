@@ -53,31 +53,31 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
-  config.vm.define :rancher do |rancher|
-
-    rancher.vm.box = 'debian/bookworm64'
-    rancher.vm.hostname = 'rancher'
-    rancher.vm.network 'private_network',
-      ip: "192.168.0.10",
-      libvirt__network_name: 'harvester',
-      # don't enable DHCP as this node will have it's now DHCP server for iPXE
-      # boot
-      libvirt__dhcp_enabled: false
-
-    rancher.vm.provider :libvirt do |libvirt|
-      libvirt.cpu_mode = 'host-passthrough'
-      libvirt.memory = '4096'
-      libvirt.cpus = '2'
-    end
-
-    ## Use ansible to install server
-    #pxe_server.vm.provision :ansible do |ansible|
-    #  ansible.playbook = 'ansible/setup_pxe_server.yml'
-    #  ansible.extra_vars = {
-    #    settings: @settings
-    #  }
-    #end
-  end
+#  config.vm.define :rancher do |rancher|
+#
+#    rancher.vm.box = 'debian/bookworm64'
+#    rancher.vm.hostname = 'rancher'
+#    rancher.vm.network 'private_network',
+#      ip: "192.168.0.10",
+#      libvirt__network_name: 'harvester',
+#      # don't enable DHCP as this node will have it's now DHCP server for iPXE
+#      # boot
+#      libvirt__dhcp_enabled: false
+#
+#    rancher.vm.provider :libvirt do |libvirt|
+#      libvirt.cpu_mode = 'host-passthrough'
+#      libvirt.memory = '4096'
+#      libvirt.cpus = '2'
+#    end
+#
+#    ## Use ansible to install server
+#    #pxe_server.vm.provision :ansible do |ansible|
+#    #  ansible.playbook = 'ansible/setup_pxe_server.yml'
+#    #  ansible.extra_vars = {
+#    #    settings: @settings
+#    #  }
+#    #end
+#  end
 
 
   cluster_node_index = @settings['harvester_cluster_nodes'] - 1
@@ -99,7 +99,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           bus: 'virtio',
           device: 'vda'
         #libvirt.graphics_port = "590#{node_number}"
-        libvirt.graphics_ip = '192.168.11.12'
+        libvirt.graphics_ip = '10.30.47.93'
         libvirt.video_type = 'qxl'
         boot_network = {'network' => 'harvester'}
         libvirt.boot 'hd'

@@ -99,7 +99,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           bus: 'virtio',
           device: 'vda'
         #libvirt.graphics_port = "590#{node_number}"
-        libvirt.graphics_ip = '192.168.1.22'
+        libvirt.graphics_ip = '10.30.47.93'
         libvirt.video_type = 'qxl'
         boot_network = {'network' => 'harvester'}
         libvirt.boot 'hd'

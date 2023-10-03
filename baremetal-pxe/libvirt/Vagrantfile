@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 BARE_METAL_NODES = 3;
+INTERFACE = 'wlp0s20f3';
 
 
 Vagrant.configure("2") do |config|
@@ -11,7 +12,7 @@ Vagrant.configure("2") do |config|
     rancher.vm.hostname = 'rancher'
     rancher.vm.network 'public_network',
       ip: "192.168.31.30",
-      dev: 'br0',
+      dev: INTERFACE,
       auto_config: false
       #libvirt__network_name: 'harvester',
       # don't enable DHCP as this node will have it's now DHCP server for iPXE
@@ -22,6 +23,8 @@ Vagrant.configure("2") do |config|
       libvirt.memory = '4096'
       libvirt.cpus = '2'
     end
+    rancher.vm.provision "file", source: "./cluster.yaml", destination: "/home/vagrant/cluster.yaml"
+    rancher.vm.provision "shell", path: "RANCHER.sh"
     ## Use ansible to install server
     #pxe_server.vm.provision :ansible do |ansible|
     #  ansible.playbook = 'ansible/setup_pxe_server.yml'

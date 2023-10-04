@@ -1,3 +1,4 @@
+#!/bin/bash
 # Install Rancher on kind k8s cluster
 
 ## Variables:

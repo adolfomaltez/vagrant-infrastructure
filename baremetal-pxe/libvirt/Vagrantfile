@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 BARE_METAL_NODES = 3;
-INTERFACE = 'wlp0s20f3';
+INTERFACE = 'br0';
 
 
 Vagrant.configure("2") do |config|
@@ -10,14 +10,14 @@ Vagrant.configure("2") do |config|
   config.vm.define :rancher do |rancher|
     rancher.vm.box = 'debian/bookworm64'
     rancher.vm.hostname = 'rancher'
-    rancher.vm.network 'public_network',
+    rancher.vm.network 'private_network',
       ip: "192.168.31.30",
       dev: INTERFACE,
-      auto_config: false
-      #libvirt__network_name: 'harvester',
+      auto_config: false,
+      libvirt__network_name: 'harvester',
       # don't enable DHCP as this node will have it's now DHCP server for iPXE
       # boot
-      #libvirt__dhcp_enabled: false
+      libvirt__dhcp_enabled: false
     rancher.vm.provider :libvirt do |libvirt|
       libvirt.cpu_mode = 'host-passthrough'
       libvirt.memory = '4096'
@@ -38,17 +38,19 @@ Vagrant.configure("2") do |config|
   (1..BARE_METAL_NODES).each do |i|
     config.vm.define "machine-#{i}" do |machine|
       machine.vm.hostname = "machine-#{i}"
-      machine.vm.network :public_network,
-        dev: 'br0',
+      machine.vm.network :private_network,
+        dev: INTERFACE,
         mac: "0800AA0800A#{i}",
-        auto_config: false
+        auto_config: false,
+        libvirt__network_name: 'harvester',
+        libvirt__dhcp_enabled: false
       machine.vm.provider :libvirt do |libvirt|
         libvirt.cpu_mode = 'host-passthrough'
         libvirt.memory = '2048'
         libvirt.cpus = '2'
         boot_network = {'dev' => 'br0'}
         libvirt.storage :file, :size => '300G'
-        libvirt.boot boot_network
+        libvirt.boot harvester
         libvirt.boot 'hd'
         # VNC parameters
         libvirt.graphics_ip = '192.168.31.11'

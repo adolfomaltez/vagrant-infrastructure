@@ -38,7 +38,7 @@ harvester_rootfs_url: file:///home/taro/Downloads/harvester/harvester-v1.2.0-roo
 #
 # NOTE: keep in mind that you need at least 3 nodes to make a cluster
 #
-harvester_cluster_nodes: 1
+harvester_cluster_nodes: 3
 
 #
 # network_config
@@ -74,25 +74,25 @@ harvester_network_config:
   cluster:
     - ip: 192.168.0.30
       mac: 02:00:00:0D:62:E2
-      cpu: 6
-      memory: 8192
+      cpu: 8
+      memory: 20480
       disk_size: 500G
       vagrant_interface: ens5
       mgmt_interface: ens6
     - ip: 192.168.0.31
       mac: 02:00:00:35:86:92
-      cpu: 6
-      memory: 8192
+      cpu: 8
+      memory: 20480
       disk_size: 500G
       vagrant_interface: ens5
       mgmt_interface: ens6
-#    - ip: 192.168.0.32
-#      mac: 02:00:00:2F:F2:2A
-#      cpu: 10
-#      memory: 20480
-#      disk_size: 500G
-#      vagrant_interface: ens5
-#      mgmt_interface: ens6
+    - ip: 192.168.0.32
+      mac: 02:00:00:2F:F2:2A
+      cpu: 8
+      memory: 20480
+      disk_size: 500G
+      vagrant_interface: ens5
+      mgmt_interface: ens6
 #    - ip: 192.168.0.33
 #      mac: 02:00:00:A7:E6:FF
 #      cpu: 10
@@ -130,10 +130,10 @@ harvester_config:
 #
 harvester_node_config:
   # number of CPUs assigned to each node
-  cpu: 6
+  cpu: 8
 
   # memory size for each node, in MBytes
-  memory: 8192
+  memory: 20480
 
   # disk size for each node
   disk_size: 500G

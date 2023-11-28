@@ -1,0 +1,36 @@
+# Guest VM
+ip link add link eth1 name eth1.101 type vlan id 101
+ip link add link eth1 name eth1.102 type vlan id 102
+ip link add link eth1 name eth1.103 type vlan id 103
+
+ip addr add 192.168.0.11/24  dev eth1
+ip addr add 192.168.101.11/24  dev eth1.101
+ip addr add 192.168.102.11/24  dev eth1.102
+ip addr add 192.168.103.11/24  dev eth1.103
+
+ip link set eth1 up
+ip link set eth1.101 up
+ip link set eth1.102 up
+ip link set eth1.103 up
+
+# Host:
+ip link add link virbr2 name virbr2.101 type vlan id 101
+ip link add link virbr2 name virbr2.102 type vlan id 102
+ip link add link virbr2 name virbr2.103 type vlan id 103
+
+ip addr add 192.168.101.1/24  dev virbr2.101
+ip addr add 192.168.102.1/24  dev virbr2.102
+ip addr add 192.168.103.1/24  dev virbr2.103
+
+
+
+<network ipv6='yes'>
+  <name>harvester</name>
+  <uuid>16443a3e-6d6e-4c0c-aca8-d2b7213608a2</uuid>
+  <forward mode='route'/>
+  <bridge name='virbr2' stp='on' delay='0'/>
+  <mac address='52:54:00:41:0a:3a'/>
+  <ip address='192.168.0.1' netmask='255.255.255.0'>
+  </ip>
+</network>
+

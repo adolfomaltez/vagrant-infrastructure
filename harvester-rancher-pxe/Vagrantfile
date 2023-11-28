@@ -36,6 +36,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       libvirt__network_name: 'harvester',
       # don't enable DHCP as this node will have it's now DHCP server for iPXE
       # boot
+      libvirt__forward_mode: 'route',
+      #libvirt__network_type: 'bridge',
+      #libvirt__bridge_name: 'virbr2',
+      #libvirt__iface_name: 'virbr2',
       libvirt__dhcp_enabled: false
 
     pxe_server.vm.provider :libvirt do |libvirt|
@@ -44,13 +48,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       libvirt.cpus = '2'
     end
 
-    # Use ansible to install server
-    pxe_server.vm.provision :ansible do |ansible|
-      ansible.playbook = 'ansible/setup_pxe_server.yml'
-      ansible.extra_vars = {
-        settings: @settings
-      }
-    end
+    ## Use ansible to install server
+    #pxe_server.vm.provision :ansible do |ansible|
+    #  ansible.playbook = 'ansible/setup_pxe_server.yml'
+    #  ansible.extra_vars = {
+    #    settings: @settings
+    #  }
+    #end
   end
 
   config.vm.define :rancher do |rancher|
@@ -87,6 +91,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       harvester_node.vm.network 'private_network',
         libvirt__network_name: 'harvester',
         mac: @settings['harvester_network_config']['cluster'][node_number]['mac']
+      
+      # VLANs Interface
+      harvester_node.vm.network 'private_network', 
+        ip: "192.168.50.30",
+        libvirt__network_name: 'vlans'
+
+      # Storage Interface
+      harvester_node.vm.network 'private_network', 
+        ip: "192.168.60.30",
+        libvirt__network_name: 'storage'       
 
       harvester_node.vm.provider :libvirt do |libvirt|
         libvirt.cpu_mode = 'host-passthrough'
@@ -98,7 +112,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           bus: 'virtio',
           device: 'vda'
         #libvirt.graphics_port = "590#{node_number}"
-        libvirt.graphics_ip = '192.168.11.12'
+        libvirt.graphics_ip = '192.168.31.13'
         libvirt.video_type = 'qxl'
         boot_network = {'network' => 'harvester'}
         libvirt.boot 'hd'

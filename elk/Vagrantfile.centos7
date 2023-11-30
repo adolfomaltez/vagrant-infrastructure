@@ -1,0 +1,66 @@
+# Vagrantfile: 
+# Create 3x AlmaLinux 8.6 nodes for k8s worker cluster: worker-01
+
+# Variables
+NODES = 1
+DISKS = 8
+PUBLIC_SUBNET   = "192.168.10"
+ASSIGN_STATIC_IP = 50
+BOX = "centos/7"
+#BOX_VERSION = "8.6.20221001"
+BOX_VERSION = "2004.01"
+MEMORY = 4200
+CPU = 2
+
+$last_ip_pub_digit     = 9
+$last_ip_cluster_digit = 9
+
+Vagrant.configure("2") do |config|
+
+  (0..NODES - 1).each do |i|
+    config.vm.define "elk-0#{i+1}" do |node|
+      node.vm.hostname = "elk-0#{i+1}"
+      node.vm.box = BOX
+      node.vm.box_version = BOX_VERSION
+      if ASSIGN_STATIC_IP
+        node.vm.network :public_network,
+          ip: "#{PUBLIC_SUBNET}.#{ASSIGN_STATIC_IP+=1}"
+      end
+      node.vm.provider :virtualbox do |vb|
+        vb.memory = MEMORY
+        vb.cpus = CPU
+
+
+        unless File.exist?("disk-#{i}-0.vdi")
+          vb.customize ['storagectl', :id,
+                        '--name', 'OSD Controller',
+                        '--add', 'scsi']
+        end
+
+        # USB with LUKS key
+        #vb.customize ['createhd',
+        #              '--filename', "disk-usb",
+        #              '--size', '512'] unless File.exist?("disk-usb")
+        vb.customize ['storageattach', :id,
+                      '--storagectl', 'OSD Controller',
+                      '--port', 0,
+                      '--device', 0,
+                      '--type', 'hdd',
+                      '--medium', "disk-usb.vdi"]
+
+        (0..DISKS).each do |d|
+          vb.customize ['createhd',
+                        '--filename', "disk-#{i}-#{d}",
+                        '--size', '11000'] unless File.exist?("disk-#{i}-#{d}.vdi")
+          vb.customize ['storageattach', :id,
+                        '--storagectl', 'OSD Controller',
+                        '--port', 1 + d,
+                        '--device', 0,
+                        '--type', 'hdd',
+                        '--medium', "disk-#{i}-#{d}.vdi"]
+        end
+      end
+    end
+  end
+end
+

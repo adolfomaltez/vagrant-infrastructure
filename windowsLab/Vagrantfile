@@ -1,0 +1,51 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# gem install winrm-elevated
+# vagrant plugin install winrm-elevated
+# netsh advfirewall set allprofiles state off 
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "dc1-2022" do |node|
+    node.vm.box = "gusztavvargadr/windows-server"
+    node.vm.box_version = "2102.0.2303"
+    node.vm.network "public_network", ip: "192.168.10.22"
+    node.vm.provider "virtualbox" do |vb|
+      vb.gui = true
+      vb.cpus = 3
+      vb.memory = "4096"
+    end
+  end
+
+  config.vm.define "dc1-2019" do |node|
+    node.vm.box = "gusztavvargadr/windows-server-2019-standard"
+    node.vm.network "public_network", ip: "192.168.10.23"
+    node.vm.provider "virtualbox" do |vb|
+      vb.gui = true
+      vb.cpus = 3
+      vb.memory = "4096"
+    end
+  end
+
+  config.vm.define "servercore-2019" do |node|
+    node.vm.box = "gusztavvargadr/windows-server-2019-standard-core"
+    node.vm.network "public_network", ip: "192.168.10.24"
+    node.vm.provider "virtualbox" do |vb|
+      vb.gui = true
+      vb.cpus = 2
+      vb.memory = "2048"
+    end
+  end
+
+  config.vm.define "w10" do |node|
+    node.vm.box = "gusztavvargadr/windows-10"
+    node.vm.network "public_network", ip: "192.168.10.25"
+    node.vm.provider "virtualbox" do |vb|
+      vb.gui = true
+      vb.cpus = 3
+      vb.memory = "4096"
+    end
+  end
+
+end

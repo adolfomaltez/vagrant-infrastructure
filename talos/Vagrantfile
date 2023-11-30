@@ -1,4 +1,6 @@
 current_dir = File.dirname(__FILE__)
+# https://www.talos.dev/v1.5/talos-guides/install/virtualized-platforms/vagrant-libvirt/
+# wget --timestamping https://github.com/siderolabs/talos/releases/download/v1.5.5/metal-amd64.iso -O /tmp/metal-amd64.iso
 
 Vagrant.configure("2") do |config|
   config.vm.define "control-plane-node-1" do |vm|
@@ -6,7 +8,7 @@ Vagrant.configure("2") do |config|
       domain.cpus = 2
       domain.memory = 2048
       domain.serial :type => "file", :source => {:path => "#{current_dir}/control-plane-node-1.log"}
-      domain.storage :file, :device => :cdrom, :path => "#{current_dir}/talos-amd64.iso"
+      domain.storage :file, :device => :cdrom, :path => "/tmp/metal-amd64.iso"
       domain.storage :file, :size => '4G', :type => 'raw'
       domain.boot 'hd'
       domain.boot 'cdrom'
@@ -18,7 +20,7 @@ Vagrant.configure("2") do |config|
       domain.cpus = 2
       domain.memory = 2048
       domain.serial :type => "file", :source => {:path => "#{current_dir}/control-plane-node-2.log"}
-      domain.storage :file, :device => :cdrom, :path => "#{current_dir}/talos-amd64.iso"
+      domain.storage :file, :device => :cdrom, :path => "/tmp/metal-amd64.iso"
       domain.storage :file, :size => '4G', :type => 'raw'
       domain.boot 'hd'
       domain.boot 'cdrom'
@@ -30,7 +32,7 @@ Vagrant.configure("2") do |config|
       domain.cpus = 2
       domain.memory = 2048
       domain.serial :type => "file", :source => {:path => "#{current_dir}/control-plane-node-3.log"}
-      domain.storage :file, :device => :cdrom, :path => "#{current_dir}/talos-amd64.iso"
+      domain.storage :file, :device => :cdrom, :path => "/tmp/metal-amd64.iso"
       domain.storage :file, :size => '4G', :type => 'raw'
       domain.boot 'hd'
       domain.boot 'cdrom'
@@ -42,7 +44,7 @@ Vagrant.configure("2") do |config|
       domain.cpus = 1
       domain.memory = 1024
       domain.serial :type => "file", :source => {:path => "#{current_dir}/worker-node-1.log"}
-      domain.storage :file, :device => :cdrom, :path => "#{current_dir}/talos-amd64.iso"
+      domain.storage :file, :device => :cdrom, :path => "/tmp/metal-amd64.iso"
       domain.storage :file, :size => '4G', :type => 'raw'
       domain.boot 'hd'
       domain.boot 'cdrom'

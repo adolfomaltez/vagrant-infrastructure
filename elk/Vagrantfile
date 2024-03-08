@@ -1,10 +1,10 @@
 # Vagrantfile: 
-# Create 3x AlmaLinux 8.6 nodes for k8s worker cluster: worker-01
+# ELK
 
 # Variables
 NODES = 1
 DISKS = 2
-PUBLIC_SUBNET   = "192.168.10"
+PUBLIC_SUBNET   = "192.168.31"
 ASSIGN_STATIC_IP = 50
 BOX = "centos/7"
 #BOX_VERSION = "8.6.20221001"

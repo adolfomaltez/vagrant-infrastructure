@@ -1,20 +1,20 @@
 
 Vagrant.configure("2") do |config|
 
-  config.vm.define "debian-san" do |san|
+  config.vm.define "iscsi-debian" do |san|
     san.vm.provider "virtualbox" do |vb|
       vb.memory = 2048
       vb.cpus = 2
 
       unless File.exist?('disk.vdi')
-        vb.customize ['createhd', '--filename', 'disk.vdi', '--variant', 'Fixed', '--size', 1 * 1024]
+        vb.customize ['createhd', '--filename', 'disk.vdi', '--variant', 'Fixed', '--size', 10 * 1024]
       end
 
       vb.customize ['storageattach', :id,  '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', 'disk.vdi']
 
     end
-    san.vm.box = "debian/buster64"
-    san.vm.hostname = "debian-san"
+    san.vm.box = "debian/bullseye64"
+    san.vm.hostname = "iscsi-debian"
     san.vm.network "public_network", ip: "192.168.31.94"
     san.vm.provision "shell", path: "provision.sh"
   end

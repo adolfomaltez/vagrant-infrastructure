@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
 
     awx01.vm.box = BOX_BASE
     awx01.vm.hostname = "awx01"
-    awx01.vm.network "private_network", ip: "192.168.33.30"
+    awx01.vm.network "private_network", ip: "192.168.31.31"
     awx01.vm.provision "shell", path: "provision-awx.sh"
   end
 end

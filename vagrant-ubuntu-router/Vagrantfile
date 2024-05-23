@@ -1,0 +1,22 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box_check_update = false
+
+  # router
+  config.vm.define "router" do |rtr|
+    rtr.vm.hostname = "router"
+    rtr.vm.box = "ubuntu/jammy64"
+    rtr.vm.network :private_network, ip: "192.168.77.2"
+    rtr.vm.network :private_network, ip: "192.168.11.2"
+    rtr.vm.provision "shell", path: "provision.sh"
+   end
+
+ 
+  config.vm.provider "virtualbox" do |vb|
+     vb.gui = false
+     vb.memory = "2048"
+     vb.cpus = 2
+  end
+end

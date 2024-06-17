@@ -1,0 +1,25 @@
+---
+# cluster_name is used to group the nodes in a folder within VirtualBox:
+cluster_name: Kubernetes Cluster
+network:
+  # Worker IPs are simply incremented from the control IP.
+  control_ip: 192.168.31.100
+  dns_servers:
+    - 8.8.8.8
+    - 1.1.1.1
+  pod_cidr: 100.64.0.0/16
+  service_cidr: 100.65.0.0/16
+nodes:
+  control:
+    cpu: 2
+    memory: 4096
+  workers:
+    count: 2
+    cpu: 2
+    memory: 4096
+
+software:
+  box: bento/ubuntu-22.04
+  antrea: 2.0.0
+  kubernetes: "1.28.4-1.1"
+  os: xUbuntu_22.04

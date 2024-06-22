@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Install frr
+sudo apt-get update
 sudo apt-get -y install frr
 
 # Enable bgpd

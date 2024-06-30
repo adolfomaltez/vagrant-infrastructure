@@ -26,10 +26,15 @@ sed -i -e 's/#\ DBPassword=/DBPassword=zabbix/g' /etc/zabbix/zabbix_server.conf
 sed -i '/server {/a\ \ \ \ \ \ \ \ \ server_name\ \ \ \ \ 192.168.31.94;' /etc/zabbix/nginx.conf
 sed -i '/server {/a\ \ \ \ \ \ \ \ \ listen\ \ \ \ \ \ \ \ \ \ 80;' /etc/zabbix/nginx.conf
 
+# Zabbix initial configuration
+sudo cp -v /vagrant/zabbix.conf.php /etc/zabbix/web/zabbix.conf.php
+
 # Restart zabbix services
 sudo systemctl restart zabbix-server zabbix-agent nginx php8.2-fpm
 
 # View on web browser
-echo "View on your WEB browser http://192.168.31.94/ to finish the zabbix configuration"
+echo "Installation finished!"
+echo ""
+echo "Access zabbix via WEB browser http://192.168.31.94/"
 echo "User: Admin"
 echo "Password: zabbix"

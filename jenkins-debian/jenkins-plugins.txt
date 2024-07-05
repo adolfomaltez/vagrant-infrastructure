@@ -87,3 +87,5 @@ ldap
 email-ext
 theme-manager
 dark-theme
+docker-commons
+docker-workflow

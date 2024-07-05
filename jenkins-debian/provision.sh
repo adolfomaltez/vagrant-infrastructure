@@ -2,7 +2,20 @@
 
 echo "Installing utilities"
 sudo apt-get -qq update
-sudo apt-get -qq install -y gpg curl net-tools
+sudo apt-get -qq install -y gpg curl net-tools git ca-certificates curl
+
+echo "Installing Docker"
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get -qq install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin docker-compose
+sudo usermod -aG docker vagrant
+sudo usermod -aG docker jenkins
 
 echo "Adding jenkins keys"
 curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
@@ -31,7 +44,6 @@ sudo cp -v /vagrant/02_createAdminUser.groovy /var/lib/jenkins/init.groovy.d/
 
 sudo service jenkins start
 sleep 1m
-
 
 echo "Installing jenkins plugins"
 JENKINSPWD=$(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)

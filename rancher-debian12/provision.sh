@@ -82,7 +82,8 @@ kubectl create namespace harbor
 helm install harbor harbor/harbor \
   --version=1.15.0 \
   --namespace harbor \
-  --set expose.ingress.hosts.core=harbor.192-168-31-81.sslip.io
+  --set expose.ingress.hosts.core=harbor.192-168-31-81.sslip.io \
+  --set expose.externalURL=https://harbor.192-168-31-81.sslip.io
 
 
 # View on web browser

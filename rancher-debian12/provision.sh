@@ -18,8 +18,6 @@ sudo apt-get -qq -y update
 sudo apt-get -qq -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 sudo usermod -aG docker vagrant
-sudo su
-su vagrant
 
 
 ## Install kind
@@ -40,6 +38,7 @@ sudo apt-get -qq -y install kubernetes-client
 ## Create kind cluster with extra paths.
 kind create cluster --name=rancher --config=/vagrant/cluster.yaml
 mkdir -p /home/vagrant/.kube
+chown vagrant:vagrant /home/vagrant/.kube
 kind get kubeconfig --name=rancher > /home/vagrant/.kube/config
 chown vagrant:vagrant /home/vagrant/.kube/config 
 chmod 600 /home/vagrant/.kube/config
@@ -47,8 +46,7 @@ chmod 600 /home/vagrant/.kube/config
 
 ## Install nginx
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-sleep 5s;
-#kubectl rollout restart deployment ingress-nginx-controller -n ingress-nginx
+sleep 30s;
 kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
@@ -62,8 +60,8 @@ helm install cert-manager jetstack/cert-manager \
       --namespace cert-manager \
       --version v1.15.1 \
       --set crds.enabled=true
-kubectl  wait --for=condition=Available apiservice v1.cert-manager.io \
-    --timeout=600s
+sleep 10s;
+kubectl  wait --for=condition=Available apiservice v1.cert-manager.io --timeout=600s
 
  ## Install Rancher
  helm repo add rancher-stable https://releases.rancher.com/server-charts/stable

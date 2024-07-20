@@ -39,9 +39,18 @@ sudo apt-get -qq -y install kubernetes-client
 
 ## Create kind cluster with extra paths.
 kind create cluster --name=rancher --config=/vagrant/cluster.yaml
+mkdir -p /home/vagrant/.kube
+kind get kubeconfig --name=rancher > /home/vagrant/.kube/config
+chmod 600 /home/vagrant/.kube/config
 
 ## Install nginx
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+sleep 5s;
+kubectl rollout restart deployment ingress-nginx-controller -n ingress-nginx
+kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=600s
 
 ## Install cert-manager
 helm repo add jetstack https://charts.jetstack.io
@@ -51,6 +60,8 @@ helm install cert-manager jetstack/cert-manager \
       --namespace cert-manager \
       --version v1.15.1 \
       --set crds.enabled=true
+kubectl  wait --for=condition=Available apiservice v1.cert-manager.io \
+    --timeout=600s
 
  ## Install Rancher
  helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
@@ -78,5 +89,10 @@ helm install harbor harbor/harbor \
 echo "Installation finished!"
 echo ""
 echo "Access rancher via WEB browser http://192.168.31.81/"
-echo "Change rancher admin password, create API token"
 echo "bootstrapPassword: admin"
+echo "Change rancher admin password, create API token for terraform"
+echo ""
+echo "Harbor access: https://harbor.192-168-31-81.sslip.io"
+echo "Harbor user: admin"
+echo "Harbor password: Harbor12345"
+echo ""

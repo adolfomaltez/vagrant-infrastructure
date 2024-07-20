@@ -1,0 +1,18 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.define "rancher" do |rnchr|
+    rnchr.vm.box = "debian/bookworm64"
+    rnchr.vm.hostname = "rancher"
+    rnchr.vm.network "public_network", ip: "192.168.31.81"
+    rnchr.vm.provision "shell", path: "provision.sh"
+
+    rnchr.vm.provider "virtualbox" do |r|
+      r.memory = 8192
+      r.cpus = 4
+    end
+  end
+end
+

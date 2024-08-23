@@ -2,28 +2,28 @@
 # vi: set ft=ruby :
 
 HARVESTER_NODES = 8;
-INTERFACE = 'br0';
+#INTERFACE = 'br0';
 
 Vagrant.configure("2") do |config|
 
   # Harvester HCI nodes
   (1..HARVESTER_NODES).each do |i|
 
-    config.vm.define "hvstr-0#{i}" do |hv|
-      hv.vm.box = "debian/bookworm64"
-      hv.vm.hostname = "hvstr-0#{i}"
-      hv.vm.network "public_network", ip: "192.168.31.9#{i}"
+    config.vm.define "hvstr0#{i}p" do |hv|
+      hv.vm.box = "jtyr/pxe"
+      hv.vm.hostname = "hvstr0#{i}p"
+      hv.vm.network "public_network", ip: "192.168.11.9#{i}"
       #hv.vm.provision "shell", path: "provision.sh"
-      hv.vm.disk :dvd, name: "harvester-installer", file: "/home/taro/Downloads/harvester/v1.3.1/harvester-v1.3.1-amd64.iso"
   
-      hv.vm.provider "virtualbox" do |v|
+      config.vm.provider "virtualbox" do |v|
         v.memory = 8192
         v.cpus = 4
+        v.customize ["storageattach", :id, "--storagectl", "IDE", "--port", "1", "--device", "1", "--type", "dvddrive", "--medium", "/home/taro/harvester-v1.3.1-amd64.iso"]
         v.customize ["modifyvm", :id, "--boot1", "dvd"]
         v.customize ["modifyvm", :id, "--vrde", "on"] # Enable VRDE (VNC support)
-        v.customize ["modifyvm", :id, "--vrde-port", "3389"] # Set the VNC port (default 5901)
+        v.customize ["modifyvm", :id, "--vrde-port", "339#{i}"] # Set the VNC port (default 5901)
         v.customize ["modifyvm", :id, "--vrde-address", "0.0.0.0"] # Listen on all network interfaces
-    
+
       end
     end
   end

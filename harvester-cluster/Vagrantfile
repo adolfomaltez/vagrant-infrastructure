@@ -1,7 +1,16 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-HARVESTER_NODES = 8;
+
+#1. Use "Graphical Install" option on first boot
+#2. xfreerdp3 /v:192.168.31.12:5915
+#3. echo 1 > /proc/sys/net/ipv4/ip_forward
+#4. ssh -L 127.0.0.1:8443:192.168.56.100:443 taro@192.168.31.12
+
+
+
+
+HARVESTER_NODES = 5;
 #INTERFACE = 'br0';
 
 Vagrant.configure("2") do |config|
@@ -12,19 +21,38 @@ Vagrant.configure("2") do |config|
     config.vm.define "hvstr0#{i}p" do |hv|
       hv.vm.box = "jtyr/pxe"
       hv.vm.hostname = "hvstr0#{i}p"
-      hv.vm.network "public_network", ip: "192.168.11.9#{i}"
+      hv.disksize.size = '250GB'
       #hv.vm.provision "shell", path: "provision.sh"
+      #hv.vm.network "public_network", ip: "192.168.12.9#{i}"
+
+
+      # First interface   enp0s3
+      #  IGNORE
+
+      # Second interface  enp0s8
+      hv.vm.network "private_network", ip: "192.168.56.1#{i}"
+
+      # Third interface   enp0s9
+      hv.vm.network "private_network", ip: "192.168.56.12#{i}"
+
+      # Fourth interface  enp0s10
+      hv.vm.network "private_network", ip: "192.168.56.13#{i}"
+
+
   
       config.vm.provider "virtualbox" do |v|
-        v.memory = 8192
-        v.cpus = 4
-        v.customize ["storageattach", :id, "--storagectl", "IDE", "--port", "1", "--device", "1", "--type", "dvddrive", "--medium", "/home/taro/harvester-v1.3.1-amd64.iso"]
-        v.customize ["modifyvm", :id, "--boot1", "dvd"]
-        v.customize ["modifyvm", :id, "--vrde", "on"] # Enable VRDE (VNC support)
-        #v.customize ["modifyvm", :id, "--vrde-port", "339#{i}"] # Set the VNC port (default 5901)
-        v.customize ["modifyvm", :id, "--vrde-address", "0.0.0.0"] # Listen on all network interfaces
+        v.memory = 16384
+        v.cpus = 6
+        v.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+        v.customize ["modifyvm", :id, "--boot1", "disk", "--boot2", "dvd"]
+        #v.disk :disk, size: "100GB", name: "secondary_disk" # Add a new 20GB disk named "secondary_disk"
+        v.customize ["storageattach", :id, "--storagectl", "IDE", "--port", "1", "--device", "1", "--type", "dvddrive", "--medium", "/home/taro/harvester-v1.5.0-amd64.iso"]
+        v.customize ["modifyvm", :id, "--vrde", "on"]
+        v.customize ["modifyvm", :id, "--vrde-port", "591#{i}"]
+        v.customize ["modifyvm", :id, "--vrde-address", "0.0.0.0"]
 
       end
     end
   end
 end
+
